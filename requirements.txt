@@ -1,0 +1,3 @@
+wandb
+fastai
+ipython

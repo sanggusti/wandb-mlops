@@ -1,12 +1,12 @@
 # The program to run
-program: train.py
+program: baseline.py
 
 # Method can be grid, random or bayes
 method: random
 
 # Project this sweep is part of
 project: mlops-course-001
-entity: av-team
+entity: gustiwinata
 
 # Metric to optimize
 metric:

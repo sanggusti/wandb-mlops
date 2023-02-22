@@ -7,19 +7,20 @@ import argparse
 
 import config
 from utils import get_predictions, create_iou_table, MIOU, BackgroundIOU, \
-                  RoadIOU, TrafficLightIOU, TrafficSignIOU, PersonIOU, VehicleIOU, BicycleIOU
+                  RoadIOU, TrafficLightIOU, TrafficSignIOU, PersonIOU, VehicleIOU, BicycleIOU, t_or_f
 
 default_config = SimpleNamespace(
     framework="fastai",
-    img_size=(180, 320),
-    batch_size=8,
+    img_size=180, #(180, 320) in 16:9 proportions,
+    batch_size=8, #8 keep small in Colab to be manageable
     augment=True, # use data augmentation
-    epochs=10, 
+    epochs=10, # for brevity, increase for better results :)
     lr=2e-3,
+    pretrained=True,  # whether to use pretrained encoder,
+    mixed_precision=True, # use automatic mixed precision
     arch="resnet18",
-    pretrained=True,  # whether to use pretrained encoder
     seed=42,
-    log_preds=True
+    log_preds=False,
 )
 
 def parse_args():
@@ -80,7 +81,7 @@ def log_predictions(learn):
 def log_final_training(learn):
     # Save loss and metrics via wandb.summary
     scores = learn.validate()
-    metric_names = ['final_loss'] + [f'final_{x.name}' for x in metrics]
+    metric_names = ['final_loss'] + [f'final_{x.name}' for x in learn.metrics]
     final_results = {metric_names[i] : scores[i] for i in range(len(scores))}
     for k,v in final_results.items(): 
         wandb.summary[k] = v

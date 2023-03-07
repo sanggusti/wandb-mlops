@@ -150,7 +150,7 @@ class VehicleIouMacro(IOUMacro): nm = 'vehicle'
 class BicycleIouMacro(IOUMacro): nm = 'bicycle'
 
 
-def display_diagnostics(learner, dls=None, return_vals=False):
+def display_diagnostics(learner, dls=None, return_vals=False, ds_idx=1):
     """
     Display a confusion matrix for the unet learner.
     If `dls` is None it will get the validation set from the Learner
@@ -162,7 +162,7 @@ def display_diagnostics(learner, dls=None, return_vals=False):
     See: https://docs.fast.ai/tutorial.pets.html#adding-a-test-dataloader-for-inference
     
     """
-    probs, targs = learner.get_preds(dl = dls)
+    probs, targs = learner.get_preds(dl = dls, ds_idx=ds_idx)
     preds = probs.argmax(dim=1)
     classes = list(config.BDD_CLASSES.values())
     y_true = targs.flatten().numpy()

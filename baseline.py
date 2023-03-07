@@ -89,25 +89,44 @@ def log_final_training(learn):
 def train(train_config):
     set_seed(train_config.seed, reproducible=True)
     # Set Wandb
-    run = wandb.init(project=config.WANDB_PROJECT, entity=config.ENTITY, job_type="training", config=train_config)
+    run = wandb.init(
+        project=config.WANDB_PROJECT, 
+        entity=config.ENTITY, 
+        job_type="training", 
+        config=train_config
+    )
     # Track Hyperparameters
     training_config = wandb.config
 
     processed_dataset_dir = download_data()
     df = get_df(processed_dataset_dir)
-    dls = get_data(df, bs=training_config.batch_size, img_size=training_config.img_size, augment=training_config.augment)
+    dls = get_data(
+        df, 
+        bs=training_config.batch_size, 
+        img_size=training_config.img_size, 
+        augment=training_config.augment
+    )
     
     metrics = [MIOU(), BackgroundIOU(), RoadIOU(), TrafficLightIOU(), \
            TrafficSignIOU(), PersonIOU(), VehicleIOU(), BicycleIOU()]
 
-    learn = unet_learner(dls, arch=getattr(tvmodels, training_config.arch), pretrained=training_config.pretrained, metrics=metrics)
+    learn = unet_learner(
+        dls, 
+        arch=getattr(tvmodels, training_config.arch), 
+        pretrained=training_config.pretrained, 
+        metrics=metrics
+    )
 
     callbacks = [
         SaveModelCallback(monitor='miou'),
         WandbCallback(log_preds=False, log_model=True)
     ]
     # Training model
-    learn.fit_one_cycle(training_config.epochs, training_config.lr, cbs=callbacks)
+    learn.fit_one_cycle(
+        training_config.epochs, 
+        training_config.lr, 
+        cbs=callbacks
+    )
 
     if training_config.log_preds:
         log_predictions(learn)

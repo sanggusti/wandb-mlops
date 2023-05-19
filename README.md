@@ -2,6 +2,8 @@
 
 This is semantic segmentation project on BDD cityscapes-like dataset that are tracked via wandb. You can see the run on [my wandb](https://wandb.ai/gustiwinata/mlops-course-001).
 
+The objectives of this project is to segment pedestrian view of car camera view for semantic segmentation problem using wandb to track and run the code modularly with this repository to ensure the project reproducible.
+
 ## How to set up the project
 
 The setups are pretty basic, just go

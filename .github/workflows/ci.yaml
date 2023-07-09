@@ -1,0 +1,13 @@
+name: Basic CI
+
+on: [pull_request]
+
+jobs:
+  my-first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: run python script
+        run: |
+          pip install -r requirements.txt
+          python ci.py

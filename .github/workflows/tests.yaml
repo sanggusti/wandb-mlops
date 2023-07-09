@@ -18,9 +18,9 @@ jobs:
         uses: actions/checkout@main
 
       - name: Install conda environment with Micromamba
-        uses: mamba-org/provision-with-micromamba
+        uses: mamba-org/provision-with-micromamba@main
         with:
-          environment_file: tests
+          environment_file: tests/conda-environment.yaml
           environment-name: course
           cache-env: true
           cache-downloads: true
